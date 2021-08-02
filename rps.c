@@ -24,7 +24,7 @@ int main() {
 
     do {
         scanf(" %d", &no_of_rounds);
-    } while(no_of_rounds > 10);
+    } while(no_of_rounds > 10); //Make sure that the user types a number!
 
     //Allows players to access their choice.
     (mode == 1) ? (single_player(no_of_rounds)) : (double_player(no_of_rounds));
@@ -32,10 +32,10 @@ int main() {
 }
 
 int convert(int temp);
-int determine_winner(char p1, char p2);
+int determine_winner(char p1, char p2, int tally[]);
 
 int single_player(int rounds) {
-    int score_p1, score_p2;
+    int score_p1=0, score_p2=0, tally[2]={0, 0};
     for (int r=0; r<rounds; r++) {
         char p1;
         int p2;
@@ -45,11 +45,16 @@ int single_player(int rounds) {
         } while (toupper(p1) != 'R' && toupper(p1) != 'P' && toupper(p1) != 'S');
 
         p2 = convert((rand() % 3) + 1);
-        determine_winner(toupper(p1), toupper(p2));
+        determine_winner(toupper(p1), toupper(p2), tally);
+        score_p1 += tally[0];
+        score_p2 += tally[1];
+
+        printf("The score of Player 1 is %d \n", score_p1);
+        printf("Meanwhile, the score of your opponent is %d \n", score_p2);
     }
 }
 int double_player(int rounds) {
-    int score_p1, score_p2;
+    int score_p1=0, score_p2=0, tally[2]={0, 0};
     printf("Rock, Paper, or Scissors? Simply type R, P or S.\n");
 
     for (int r=0; r<rounds; r++) {
@@ -64,7 +69,12 @@ int double_player(int rounds) {
             scanf(" %c", &p2);
         } while (toupper(p2) != 'R' && toupper(p2) != 'P' && toupper(p2) != 'S');
 
-        determine_winner(toupper(p1), toupper(p2)); //Only notes score of player 1
+        determine_winner(toupper(p1), toupper(p2), tally); //Only notes score of player 1
+        score_p1 += tally[0];
+        score_p2 += tally[1];
+
+        printf("The score of Player 1 is %d \n", score_p1);
+        printf("Meanwhile, the score of Player 2 is %d \n", score_p2);
     }
 }
 
@@ -80,55 +90,46 @@ int convert(int temp) {
     }
 }
 
-int rock(char p1, char p2);
-int paper(char p1, char p2);
-int scissors(char p1, char p2);
+int rock(char p1, char p2, int tally[]);
+int paper(char p1, char p2, int tally[]);
+int scissors(char p1, char p2, int tally[]);
 
-int determine_winner(char p1, char p2) {
+int determine_winner(char p1, char p2, int tally[]) {
     //This part ugh
     if (p1 == 'R') {
-        return rock(p1, p2);
+        rock(p1, p2, tally);
     }
     else if (p1 == 'P') {
-        return paper(p1, p2);
+        paper(p1, p2, tally);
     }
     else {
-        return scissors(p1, p2);
+        scissors(p1, p2, tally);
     }
 }
 
-int rock(char p1, char p2) {
-    if (p2 == 'R') {
-        return 0;
-    }
-    else if (p2 == 'P') {
-        return -1;
-    }
-    else {
-        return 1;
-    }
-}
-
-int paper(char p1, char p2) {
+int rock(char p1, char p2, int tally[]) {
     if (p2 == 'P') {
-        return 0;
+        tally[1] += 1;
     }
-    else if (p2 == 'S') {
-        return -1;
-    }
-    else {
-        return 1;
+    else if (p2 == 'S'){
+        tally[0] += 1;
     }
 }
 
-int scissors(char p1, char p2) {
+int paper(char p1, char p2, int tally[]) {
     if (p2 == 'S') {
-        return 0;
+        tally[1] += 1;
     }
-    else if (p2 == 'R') {
-        return -1;
+    else if (p2 == 'R'){
+        tally[0] += 1;
     }
-    else {
-        return 1;
+}
+
+int scissors(char p1, char p2, int tally[]) {
+    if (p2 == 'R') {
+        tally[1] += 1;
+    }
+    else if (p2 == 'P'){
+        tally[0] += 1;
     }
 }
