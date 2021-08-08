@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include "ttt_checker.c"
+
 int game_proper(char pos[]); 
 int check_if_match(char pos[], int num);
 int main()
@@ -41,7 +43,7 @@ int game_proper(char pos[]) {
 
         (i%2+1 == 1) ? (pos[item-1] = 'X') : (pos[item-1] = 'O');
 
-        if (check_if_match(pos, item)) {
+        if (check_if_match(pos, item) == 1) {
             printf("Player %d wins!", i%2+1);
             break;
         }
@@ -51,45 +53,88 @@ int game_proper(char pos[]) {
 }
 
 int check_if_match(char pos[], int num) {
+    int h, v, d;
     //Checks if 3 consecutive blocks are filled with the same symbol.
-
-    //To be updated.
     switch(num) {
         case(1): {
-            printf("1");
+            h = h_ott(pos);
+            v = v_ofs(pos);
+            d = d_ofn(pos);
+            if (h || v || d) {
+                return 1;
+            }
             break;
         }
         case(2): {
-            printf("2");
+            h = h_ott(pos);
+            v = v_tfe(pos);
+            if (h || v) {
+                return 1;
+            }
             break;
         }
         case(3): {
-            printf("3");
+            h = h_ott(pos);
+            v = v_tsn(pos);
+            d = d_tfs(pos);
+            if (h || v || d) {
+                return 1;
+            }
             break;
         }
         case(4): {
-            printf("4");
+            h = h_ffs(pos);
+            v = v_ofs(pos);
+            if (h || v) {
+                return 1;
+            }
             break;
         }
         case(5): {
-            printf("5");
+            int d2;
+            h = h_ffs(pos);
+            v = v_tfe(pos);
+            d = d_ofn(pos);
+            d2 = d_tfs(pos);
+            if (h || v || d || d2) {
+                return 1;
+            }
             break;
         }
         case(6): {
-            printf("6");
+            h = h_ffs(pos);
+            v = v_tsn(pos);
+            if (h || v) {
+                return 1;
+            }
             break;
         }
         case(7): {
-            printf("7");
+            h = h_sen(pos);
+            v = v_ofs(pos);
+            d = d_tfs(pos);
+            if (h || v || d) {
+                return 1;
+            }
             break;
         }
         case(8): {
-            printf("8");
+            h = h_sen(pos);
+            v = v_tfe(pos);
+            if (h || v) {
+                return 1;
+            }
             break;
         }
         case(9): {
-            printf("9");
+            h = h_sen(pos);
+            v = v_tsn(pos);
+            d = d_ofn(pos);
+            if (h || v || d) {
+                return 1;
+            }
             break;
         }
+        return 0;
     }
 }
