@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <windows.h>
+#include "rps_checker.c"
 
 int single_player();
 int double_player();
+int convert(int temp);
+char * letter_to_word(char letter);
+int winner_for_round(int tally[]);
 
 int main() {
     //A simple game of Rock, Paper Scissors.
@@ -30,9 +35,6 @@ int main() {
 
 }
 
-int convert(int temp);
-int determine_winner(char p1, char p2, int tally[]);
-
 int single_player(int rounds) {
     int score_p1=0, score_p2=0, tally[2]={0, 0};
     for (int r=0; r<rounds; r++) {
@@ -47,18 +49,23 @@ int single_player(int rounds) {
 
         //The Computer would pick a number from 1 to 3. Such is equivalent to Rock, Paper, or Scissors.
         p2 = convert((rand() % 3) + 1); 
-        
+        Sleep(1000);
         determine_winner(toupper(p1), toupper(p2), tally);
         
         //Adds the scores.
         score_p1 += tally[0];
         score_p2 += tally[1];
-
+    
         printf("===========================================\n");
+        printf("%s vs %s \n", letter_to_word(toupper(p1)), letter_to_word(toupper(p2)));
+        Sleep(1500);
+        winner_for_round(tally);
         printf("The score of Player 1 is %d. \n", score_p1);
         printf("The score of your opponent is %d. \n", score_p2);
         printf("===========================================\n");
+        Sleep(1000);
     }
+
     if (score_p1 > score_p2) {
         printf("Congratulations, you win!");
     } 
@@ -69,6 +76,7 @@ int single_player(int rounds) {
         printf("It's a draw!");
     }
 }
+
 int double_player(int rounds) {
     int score_p1=0, score_p2=0, tally[2]={0, 0};
     printf("Rock, Paper, or Scissors? Simply type R, P or S.\n");
@@ -86,17 +94,22 @@ int double_player(int rounds) {
         do {
             scanf(" %c", &p2);
         } while (toupper(p2) != 'R' && toupper(p2) != 'P' && toupper(p2) != 'S');
-
+        Sleep(1500);
         determine_winner(toupper(p1), toupper(p2), tally);
+        
         
         //Adds the scores.
         score_p1 += tally[0];
         score_p2 += tally[1];
 
         printf("===========================================\n");
+        printf("%s vs %s \n", letter_to_word(toupper(p1)), letter_to_word(toupper(p2)));
+        Sleep(1000);
+        winner_for_round(tally);
         printf("The score of Player 1 is %d. \n", score_p1);
         printf("The score of Player 2 is %d. \n", score_p2);
         printf("===========================================\n");
+        Sleep(1000);
     }
     if (score_p1 > score_p2) {
         printf("Congratulations Player 1, you win!");
@@ -122,63 +135,28 @@ int convert(int temp) {
     }
 }
 
-int rock(char p1, char p2, int tally[]);
-int paper(char p1, char p2, int tally[]);
-int scissors(char p1, char p2, int tally[]);
-
-int determine_winner(char p1, char p2, int tally[]) {
-    if (p1 == 'R') {
-        rock(p1, p2, tally);
+char * letter_to_word(char letter) {
+    //Converts the characters into their corresponding strings. Makes it more intuitive to players.
+    if (letter == 'R') {
+        return "Rock";
     }
-    else if (p1 == 'P') {
-        paper(p1, p2, tally);
+    if (letter == 'P') {
+        return "Paper";
     }
-    else {
-        scissors(p1, p2, tally);
+    if (letter == 'S') {
+        return "Scissors";
     }
 }
 
-int rock(char p1, char p2, int tally[]) {
-    if (p2 == 'P') {
-        tally[0] = 0;
-        tally[1] = 1;
+int winner_for_round(int tally[]) {
+    //A function that determines the winner for a specific round.
+    if (tally[0] > tally[1]) {
+        printf("Player 1 wins this round! \n");
     }
-    else if (p2 == 'S'){
-        tally[0] = 1;
-        tally[1] = 0;
-    }
-    else {
-        tally[0] = 0;
-        tally[1] = 0;
-    }
-}
-
-int paper(char p1, char p2, int tally[]) {
-    if (p2 == 'S') {
-        tally[0] = 0;
-        tally[1] = 1;
-    }
-    else if (p2 == 'R'){
-        tally[0] = 1;
-        tally[1] = 0;
+    else if (tally[0] < tally[1]) {
+        printf("Player 2 wins this round! \n");
     }
     else {
-        tally[0] = 0;
-        tally[1] = 0;
-    }
-}
-
-int scissors(char p1, char p2, int tally[]) {
-    if (p2 == 'R') {
-        tally[0] = 0;
-        tally[1] = 1;
-    }
-    else if (p2 == 'P'){
-        tally[0] = 1;
-        tally[1] = 0;
-    }
-    else {
-        tally[0] = 0;
-        tally[1] = 0;
+        printf("This round ends with a draw! \n");
     }
 }
