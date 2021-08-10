@@ -1,3 +1,5 @@
+//Is "ttt_checker.c"
+
 int h_ott(char pos[]) {
     int value;
     //Checks if positions 1, 2, and 3 have the same symbol.

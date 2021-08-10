@@ -2,28 +2,28 @@
 #include <windows.h>
 #include "ttt_checker.c"
 
-int print_board(char pos[]);
+void print_board(char pos[]);
 int game_proper(char pos[]); 
 int check_if_match(char pos[], int num);
 
-int main()
-{
+void main_ttt()
+{   //A game of Tic-Tac-Toe.
     char pos[10] = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
     printf("Welcome to a game of Tic-Tac-Toe.");
     printf("In this game, Player 1 will be using 'X' while Player 2 will be using 'O'.\n");
-    Sleep(1000);
+    Sleep(1500);
     print_board(pos); 
     printf("Note that the numbers correspond to the available spots. One may place their piece with the number of their choice.\n");
-    Sleep(1500);
+    Sleep(3000);
 
     //Proclaims a draw if a winner has not been declared.
     if (!game_proper(pos)) {
         print_board(pos);
-        printf("It's a draw!");
+        printf("It's a draw!\n");
     }
 }
 
-int print_board(char pos[]) {
+void print_board(char pos[]) {
     //A function that displays the game on screen.
     printf("-------------\n");
     printf("| %c | %c | %c |\n", pos[0], pos[1], pos[2]);
@@ -56,7 +56,7 @@ int game_proper(char pos[]) {
         //If a winner is found, proclaim the victor.
         if (check_if_match(pos, item) == 1) {
             print_board(pos);
-            printf("Player %d wins!", i%2+1);
+            printf("Player %d wins!\n", i%2+1);
             return 1;
         }
         //Resets the value of item. Else the program might not ask for user's input.
