@@ -4,6 +4,7 @@
 int status = 1; //A flag that signifies the program was run for the first time.
 void first_time();
 void succeeding_times();
+char prompt_after_game();
 
 void main() {
     int option = 0;
@@ -26,10 +27,7 @@ void main() {
             char ans = 'Y';
             while (toupper(ans) == 'Y') { //Allows the player to repeat the game.
                 main_rps();
-                printf("Would you like to play again? Input 'Y' if Yes and 'N' if No.\n");
-                do {
-                    scanf("%c", &ans);
-                } while(toupper(ans) != 'Y' && toupper(ans) != 'N');
+                ans = prompt_after_game();
             }
             break;
         }
@@ -38,10 +36,7 @@ void main() {
             char ans = 'Y';
             while (toupper(ans) == 'Y') { //Allows the player to repeat the game.
                 main_ttt();
-                printf("Would you like to play again? Input 'Y' if Yes and 'N' if No.\n");
-                do {
-                    scanf("%c", &ans);
-                } while(toupper(ans) != 'Y' && toupper(ans) != 'N');
+                ans = prompt_after_game();
             }
             break;
         }
@@ -51,6 +46,7 @@ void main() {
             exit(0);
         }
     }
+    
     //Allows the player to choose another option.
     char response = 'Y';
     printf("Would you like to choose another option? Input 'Y' if Yes and 'N' if No.\n");
@@ -82,4 +78,14 @@ void succeeding_times() {
     printf("(1) Rock, Paper, Scissors\n");
     printf("(2) Tic-Tac-Toe\n");
     printf("(3) Quit\n");
+}
+
+char prompt_after_game() {
+    char ans;
+    printf("Would you like to play again? Input 'Y' if Yes and 'N' if No.\n");
+    do {
+        scanf("%c", &ans);
+    } while(toupper(ans) != 'Y' && toupper(ans) != 'N');
+    
+    return ans;
 }
